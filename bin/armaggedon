@@ -1,0 +1,27 @@
+#!/bin/bash
+##############################################################################
+# cleanup-non-running-images
+# -----------
+# Removes all the docker cache.
+#
+# :authors: @xabim
+# :date: 23 Jul 2019
+# :version: 0.0.1
+##############################################################################
+set -e
+set -o pipefail
+
+removecontainers () {
+	docker stop $(docker ps -aq)
+	docker rm $(docker ps -aq)
+}
+
+armageddon () {
+	removecontainers
+	docker network prune -f
+	docker rmi -f $(docker images --filter dangling=true -qa)
+	docker volume rm $(docker volume ls --filter dangling=true -q)
+	docker rmi -f $(docker images -qa)
+}
+
+armageddon

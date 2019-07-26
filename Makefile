@@ -1,0 +1,56 @@
+.PHONY: all
+all: sudoless macos-defaults git hosts wallpaper brew fonts bin
+
+.PHONY: sudoless
+sudoless:
+	install/sudoless.sh
+
+.PHONY: macos-defaults
+macos-defaults:
+	install/macos-defaults.sh
+
+.PHONY: git
+git:
+	install/git.sh
+
+.PHONY: hosts
+hosts:
+	install/hosts.sh
+
+.PHONY: wallpaper
+wallpaper:
+	install/wallpaper.sh
+
+.PHONY: brew
+brew:
+	install/brew.sh
+
+.PHONY: fonts
+fonts:
+	install/fonts.sh
+
+.PHONY: bin
+bin:
+	for file in $(shell find $(CURDIR)/bin -type f); do \
+		f=$$(basename $$file); \
+		sudo ln -sf $$file /usr/local/bin/$$f; \
+	done
+
+.PHONY: test
+test: shellcheck ## Runs all the tests on the files in the repository.
+
+# if this session isn't interactive, then we don't want to allocate a
+# TTY, which would fail, but if it is interactive, we do want to attach
+# so that the user can send e.g. ^C through.
+INTERACTIVE := $(shell [ -t 0 ] && echo 1 || echo 0)
+ifeq ($(INTERACTIVE), 1)
+	DOCKER_FLAGS += -t
+endif
+
+.PHONY: shellcheck
+shellcheck: ## Runs the shellcheck tests on the scripts.
+	docker run --rm -i $(DOCKER_FLAGS) \
+		--name df-shellcheck \
+		-v $(CURDIR):/usr/src:ro \
+		--workdir /usr/src \
+		koalaman/shellcheck ./shellcheck.sh
