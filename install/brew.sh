@@ -50,6 +50,8 @@ fi
 require_brew git
 # update zsh to latest
 require_brew zsh
+# install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 # set zsh as the user login shell
 CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
 if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
@@ -61,7 +63,7 @@ fi
 if [[ -f "./configs/brew_packages" ]]; then
   while IFS= read -r package
     do
-	    require_cask  "$package"
+	    require_brew  "$package"
   done < "./configs/brew_packages"
 fi
 
