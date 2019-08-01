@@ -10,3 +10,4 @@ pipenv
 terraform-docs
 nmap
 wget
+ansible
