@@ -1,5 +1,5 @@
 .PHONY: all
-all: sudoless macos-defaults git hosts wallpaper brew fonts bin dotfiles
+all: sudoless macos-defaults git hosts wallpaper brew fonts bin dotfiles asdf
 
 .PHONY: sudoless
 sudoless:
@@ -32,6 +32,10 @@ fonts:
 .PHONY: dotfiles
 dotfiles:
 	install/dotfiles.sh
+
+.PHONY: asdf
+asdf:
+	install/asdf.sh
 
 .PHONY: bin
 bin:

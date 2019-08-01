@@ -1,0 +1,3 @@
+packer           https://github.com/Banno/asdf-hashicorp.git
+python           https://github.com/danhper/asdf-python.git
+terraform        https://github.com/Banno/asdf-hashicorp.git
