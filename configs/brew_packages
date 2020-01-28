@@ -8,3 +8,5 @@ asdf
 pipenv
 nmap
 ansible
+docker
+docker-machine
