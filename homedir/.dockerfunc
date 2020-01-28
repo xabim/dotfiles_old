@@ -97,13 +97,6 @@ audacity(){
 		--name audacity \
 		${DOCKER_REPO_PREFIX}/audacity
 }
-aws(){
-	docker run -it --rm \
-		-v "${HOME}/.aws:/root/.aws" \
-		--log-driver none \
-		--name aws \
-		${DOCKER_REPO_PREFIX}/awscli "$@"
-}
 cadvisor(){
 	docker run -d \
 		--restart always \
@@ -242,34 +235,6 @@ osquery(){
 		--logger_plugin=tls \
 		--logger_tls_endpoint=/api/v1/osquery/log \
 		--logger_tls_period=10
-}
-skype(){
-	del_stopped skype
-	relies_on pulseaudio
-
-	docker run -d \
-		-v /etc/localtime:/etc/localtime:ro \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-e "DISPLAY=unix${DISPLAY}" \
-		--link pulseaudio:pulseaudio \
-		-e PULSE_SERVER=pulseaudio \
-		--security-opt seccomp:unconfined \
-		--device /dev/video0 \
-		--group-add video \
-		--group-add audio \
-		--name skype \
-		${DOCKER_REPO_PREFIX}/skype
-}
-terraform(){
-	docker run -it --rm \
-		-v "${HOME}:${HOME}:ro" \
-		-v "$(pwd):/usr/src/repo" \
-		-v /tmp:/tmp \
-		--workdir /usr/src/repo \
-		--log-driver none \
-		-e GOOGLE_APPLICATION_CREDENTIALS \
-		-e SSH_AUTH_SOCK \
-		${DOCKER_REPO_PREFIX}/terraform "$@"
 }
 tor(){
 	del_stopped tor
